@@ -1,0 +1,181 @@
+
+---
+output: github_document
+---
+
+**DD measure of democracy**: The raw data file `ddrevisited_data_v1.dta` comes from [https://sites.google.com/site/joseantoniocheibub/datasets/democracy-and-dictatorship-revisited](https://sites.google.com/site/joseantoniocheibub/datasets/democracy-and-dictatorship-revisited).
+
+**Polity IV measure of democracy**: The raw data file `p4v2018.xls` comes from [http://www.systemicpeace.org/inscrdata.html](http://www.systemicpeace.org/inscrdata.html).
+
+# File Organization
+
+```
+cool-project/
+├── R/
+│   ├── clean-data.R
+│   ├── fit-models.R
+│   ├── make-table.R
+│   └── plot-data.R
+├── data/
+│   ├── raw/
+│   │   ├── ddrevisited_data_v1.dta
+│   │   └── p4v2018.xls
+│   ├── clean-data.csv
+│   └── clean-data.rds
+├── doc/
+│   ├── fig/
+│   │   └── plot1.png
+│   ├── tab/
+│   │   └── table.tex
+│   ├── cool-project.pdf
+│   └── cool-project.tex
+├── output/
+│   ├── model-fit.csv
+│   ├── model-fit.rds
+│   ├── model-pred.csv
+│   └── model-pred.rds
+├── README.md
+└── cool-project.Rproj
+```
+
+# Review Exercises for Reading Data Sets Into R
+
+There are 8 total data sets in `cool-project/` (all the files in `data/` and `output/`). Answer the following questions for each data set:
+
+1. What function should you use to read that file?
+1. What's the working directory?
+1. What's the path (relative to the working directory)?
+1. Given the above, what's the code to read the data (and store it as an object)?
+
+# Solutions 
+
+## `ddrevisited_data_v1.dta`
+
+1. The `.dta` extension indicates that this is a Stata data set, so I should use the `read_dta()` function in the haven package.
+1. The working directory is `cool-project/` because the working directory is always the project directory since I use an `.Rproj` file to manage my projects.
+1. The path is `data/raw/ddrevisited_data_v1.dta`. I can see this in the directory tree above, by inspecting the directory on my computer (e.g., Finder for macOS), or by inspecting the *Files* tab in the lower-right window in RStudio.
+1. Below:
+
+```{r message=FALSE, warning=FALSE}
+# load packages
+library(haven)  # needed for read_dta()
+
+# load raw data set
+raw_df <- read_dta("data/raw/ddrevisited_data_v1.dta")
+```
+
+## `p4v2018.xls`
+
+1. The `.xls` extension indicates that this is a Excel spreadsheet, so I should use the `read_excel()` function in the readxl package. But because this is an Excel spreadsheet, who knows what will happen.
+1. The working directory is `cool-project/` because the working directory is always the project directory since I use an `.Rproj` file to manage my projects.
+1. The path is `data/raw/dp4v2018.xls`. I can see this in the directory tree above, by inspecting the directory on my computer (e.g., Finder for macOS), or by inspecting the *Files* tab in the lower-right window in RStudio.
+1. Below:
+
+```{r message=FALSE, warning=FALSE}
+# load packages
+library(readxl)  # needed for read_dta()
+
+# load raw data set
+raw_df <- read_excel("data/raw/p4v2018.xls")
+```
+
+## `clean-data.csv`
+
+1. The `.csv` extension indicates that this is a comma-separated or CSV data set, so I should use the `read_csv()` function in the readr package (that is part of tidyverse). 
+1. The working directory is `cool-project/` because the working directory is always the project directory since I use an `.Rproj` file to manage my projects.
+1. The path is `data/clean-data.csv`. I can see this in the directory tree above, by inspecting the directory on my computer (e.g., Finder for macOS), or by inspecting the *Files* tab in the lower-right window in RStudio.
+1. Below:
+
+```{r message=FALSE, warning=FALSE}
+# load packages
+library(tidyverse)  # automatically loads readr, needed for read_csv()
+
+# load clean data set
+df <- read_csv("data/clean-data.csv")
+```
+
+## `clean-data.rds`
+
+1. The `.rds` extension indicates that this is an R data set, so I should use the `read_rds()` function in the readr package (that is part of tidyverse). 
+1. The working directory is `cool-project/` because the working directory is always the project directory since I use an `.Rproj` file to manage my projects.
+1. The path is `data/clean-data.rds`. I can see this in the directory tree above, by inspecting the directory on my computer (e.g., Finder for macOS), or by inspecting the *Files* tab in the lower-right window in RStudio.
+1. Below:
+
+```{r message=FALSE, warning=FALSE}
+# load packages
+library(tidyverse)  # automatically loads readr, needed for read_rds()
+
+# load clean data set
+df <- read_rds("data/clean-data.rds")
+
+# a little something extra, in case you're curious what the clean data set
+# looks like. it contains the polity_iv and dd measures of democracy
+glimpse(df)
+```
+
+## `model-fit.csv`
+
+1. The `.csv` extension indicates that this is a comma-separated or CSV data set, so I should use the `read_csv()` function in the readr package (that is part of tidyverse). 
+1. The working directory is `cool-project/` because the working directory is always the project directory since I use an `.Rproj` file to manage my projects.
+1. The path is `output/model-fit.csv`. I can see this in the directory tree above, by inspecting the directory on my computer (e.g., Finder for macOS), or by inspecting the *Files* tab in the lower-right window in RStudio.
+1. Below:
+
+```{r message=FALSE, warning=FALSE}
+# load packages
+library(tidyverse)  # automatically loads readr, needed for read_csv()
+
+# load clean data set
+fit_df <- read_csv("output/model-fit.csv")
+```
+## `model-fit.rds`
+
+1. The `.rds` extension indicates that this is an R data set, so I should use the `read_rds()` function in the readr package (that is part of tidyverse). 
+1. The working directory is `cool-project/` because the working directory is always the project directory since I use an `.Rproj` file to manage my projects.
+1. The path is `output/model-fit.rds`. I can see this in the directory tree above, by inspecting the directory on my computer (e.g., Finder for macOS), or by inspecting the *Files* tab in the lower-right window in RStudio.
+1. Below:
+
+```{r message=FALSE, warning=FALSE}
+# load packages
+library(tidyverse)  # automatically loads readr, needed for read_rds()
+
+# load clean data set
+fit_df <- read_rds("output/model-fit.rds")
+
+# a little something extra, in case you're curious what this "model fit"
+# data set looks like (is a regression of polity_iv on dd)
+glimpse(fit_df)
+```
+
+## `model-pred.csv`
+
+1. The `.csv` extension indicates that this is a comma-separated or CSV data set, so I should use the `read_csv()` function in the readr package (that is part of tidyverse). 
+1. The working directory is `cool-project/` because the working directory is always the project directory since I use an `.Rproj` file to manage my projects.
+1. The path is `output/model-pred.csv`. I can see this in the directory tree above, by inspecting the directory on my computer (e.g., Finder for macOS), or by inspecting the *Files* tab in the lower-right window in RStudio.
+1. Below:
+
+```{r message=FALSE, warning=FALSE}
+# load packages
+library(tidyverse)  # automatically loads readr, needed for read_csv()
+
+# load clean data set
+pred_df <- read_csv("output/model-pred.csv")
+```
+
+## `model-pred.rds`
+
+1. The `.rds` extension indicates that this is an R data set, so I should use the `read_rds()` function in the readr package (that is part of tidyverse). 
+1. The working directory is `cool-project/` because the working directory is always the project directory since I use an `.Rproj` file to manage my projects.
+1. The path is `output/model-pred.rds`. I can see this in the directory tree above, by inspecting the directory on my computer (e.g., Finder for macOS), or by inspecting the *Files* tab in the lower-right window in RStudio.
+1. Below:
+
+```{r message=FALSE, warning=FALSE}
+# load packages
+library(tidyverse)  # automatically loads readr, needed for read_rds()
+
+# load clean data set
+pred_df <- read_rds("output/model-pred.rds")
+
+# a little something extra, in case you're curious what this "prediction fit"
+# data set looks like (from a regression of polity_iv on dd)
+glimpse(pred_df)
+```
